@@ -17,3 +17,13 @@ Then I can run:
 
 (Or if you've configured mutt - as I have - to automatically look for
 sub-maildirs beginning with a dot in ~/Maildir, then just "mutt -y")
+
+--------
+I also put this at the end of my .muttrc to make threading be sane.
+I'm sure if I hacked the wd-mbox2maildir script, I wouldn't have to...
+
+    set sort=threads
+    set sort_aux=reverse-date
+    unset strict_threads
+    set sort_re=no
+    set thread_received=no

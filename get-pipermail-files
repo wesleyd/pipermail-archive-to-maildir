@@ -22,8 +22,8 @@ fi
 
 for file in `list-pipermail-files $url`; do
     if [[ "$file" =~ .gz$ ]]; then
-        curl $file | gunzip -c | mbox2maildir - $dir
+        curl $file | gunzip -c | wd-mbox2maildir - $dir
     else
-        curl $file | mbox2maildir - $dir
+        curl $file | wd-mbox2maildir - $dir
     fi
 done
