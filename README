@@ -1,0 +1,19 @@
+I want to inhale the history of a mailing list stored in pipermail.
+
+I find it tedious to read mailing list archive through pipermail's
+web interface. I'd rather read them in mutt.
+
+So I wrote a script to download the archives and put them in a maildir.
+
+It's crap in oh so many ways, but it seems to work for me.
+
+This is how one might use it:
+
+    get-pipermail-files http://lists.wibble.com/pipermail/technica ~/Maildir/.technica
+
+Then I can run:
+  
+    mutt -f ~/Maildir/.technica
+
+(Or if you've configured mutt - as I have - to automatically look for
+sub-maildirs beginning with a dot in ~/Maildir, then just "mutt -y")

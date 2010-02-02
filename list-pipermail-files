@@ -1,0 +1,47 @@
+#!/usr/bin/env perl
+#
+# Given a pipermail archive URL, parse it and return a list of the files it
+# refers to...
+#
+# Copyright (c) Wesley Darlington, 2010.
+
+use warnings;
+use strict;
+
+use LWP::Simple;
+
+sub usage() {  # And die!
+    die "Usage: $0 <http://host/pipermail/listname/>\n"
+      . "  Parse the pipermail directory, return its archives\n";
+}
+
+# TODO: parse command line args a bit better...
+my %ARGV; @ARGV{@ARGV} = @ARGV;
+usage if exists $ARGV{"-h"};
+usage if exists $ARGV{"--help"};
+
+my $base_url = shift;
+usage unless defined $base_url;
+
+my $content = get($base_url);
+if (!defined $content) {
+    die "Error fetching '$base_url' with LWP::get.\n";
+}
+
+my @lines = split /\n/, $content;
+
+my @files;
+foreach my $line (@lines) {
+    next unless $line =~ m{Text};
+    if ($line =~ m{<td><A href="(.*)">\[ (Gzip'd )?Text.*\]</a></td>}) {
+        push @files, $1;
+    } else {
+        my $line2 = $line;
+        chomp $line2;
+        print STDERR "Didn't find a match in: '$line2'\n";
+    }
+}
+
+foreach my $file (@files) {
+    print "$base_url/$file\n";
+}

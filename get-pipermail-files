@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#set -e
+
+url=$1
+dir=$2
+
+usage() {
+    echo "Usage: get-pipermail-files url dir"
+    exit 1
+}
+
+if [ "x$url" == "x" ]; then
+    usage
+fi
+if [ "x$dir" == "x" ]; then
+    usage
+fi
+
+#echo Creating directory $dir...
+#mkdir -p $dir || true
+
+for file in `list-pipermail-files $url`; do
+    if [[ "$file" =~ .gz$ ]]; then
+        curl $file | gunzip -c | mbox2maildir - $dir
+    else
+        curl $file | mbox2maildir - $dir
+    fi
+done
